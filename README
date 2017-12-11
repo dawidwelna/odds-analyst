@@ -1,0 +1,12 @@
+https://cloud.google.com/appengine/docs/standard/python/download
+
+
+# to install the library dependencies
+pip install -r requirements.txt -t
+
+#compile
+dev_appserver.py app.yaml
+
+#GCLOUD
+gcloud app deploy
+/home/.../google-cloud-sdk-182.0.0-linux-x86_64/google-cloud-sdk/bin/gcloud app logs tail -s default

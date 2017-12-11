@@ -1,0 +1,15 @@
+{% extends "default.html" %}
+
+{% block title %}Titolo della pagina{% endblock %}
+
+{% block content %}
+    <h1>HomePage</h1>
+    {% if parts %}
+        <h2>List of handlers:</h2>
+        <ul>
+            {% for p in parts %}
+            <li><a href="{{p[1]}}">{{p[0]}}</a>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}
