@@ -11,7 +11,8 @@ from wtforms.validators import URL, Email, required, ValidationError, length
 from api import app
 from api.models.search import Search
 
-MASHAPE_KEY = "<your-mashape-key>"
+#MASHAPE_KEY = "<your-mashape-key>"
+MASHAPE_KEY = "3pazOCCXCfmshc5KbkxNDCdwzfhLp1k3jpujsnhXJTkIq7BMMk"
 
 class MemeForm(FlaskForm):
     text_high = StringField('Testo in alto', [required()])
