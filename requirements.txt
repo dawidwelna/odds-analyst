@@ -3,4 +3,3 @@ wtforms==2.1
 flask_wtf==0.14.2
 beautifulsoup4
 requests==2.3
-scrapy

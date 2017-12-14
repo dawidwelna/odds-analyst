@@ -19,4 +19,4 @@ class Match(ndb.Model):
     team_home_id = ndb.IntegerProperty(indexed=False)
     team_away_id = ndb.IntegerProperty(indexed=False)
 
-    match_id = ndb.StringProperty(indexed=False) # eg. 1_2_20171221     (will be made of team_home_id, team_away_id, match_datetime)
+    match_id = ndb.StringProperty(indexed=False) # eg. 1_2_20171221   (will be made of team_home_id, team_away_id, match_datetime)

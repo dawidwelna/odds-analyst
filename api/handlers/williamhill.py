@@ -36,12 +36,23 @@ def download_williamhill():
             cols = row.find_all('td', attrs={'scope': 'col'})
 
             #ret += ( "{0}<br>".format(datetime.date.today()) )
-            ret += (league + '<br>' + cols[2].text + '<br>')
+            ret += (league + '<br>' + " " + cols[2].text + '<br>')
             ret += ( cols[4].text + ' ' + cols[5].text + ' ' + cols[6].text + '<br><br>' )
 
+            teams = cols[2].text.split(" - ")
 
-    # # Save the parameters in the datastore
-    # s = Search(content='high={}+low={}'.format(alto,basso))
-    # s.put()
+            # Save the parameters in the datastore
+            m = Match(
+
+                league=league,
+                team_home=teams[0],
+                team_away=teams[1],
+                odd_home=float(cols[4].text),
+                odd_draw=float(cols[5].text),
+                odd_away=float(cols[6].text),
+                bookmaker='williamhill',
+                bookmaker_country="ITALY")
+            m.put()
+
 
     return ret

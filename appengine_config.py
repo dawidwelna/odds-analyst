@@ -3,6 +3,10 @@
 import os
 
 from google.appengine.ext import vendor
+
+import tempfile
+tempfile.SpooledTemporaryFile = tempfile.TemporaryFile
+
 vendor.add('lib')
 
 # we set a GAE_DEV variable to know if we are running on the local development environment

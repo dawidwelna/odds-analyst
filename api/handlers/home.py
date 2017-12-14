@@ -12,5 +12,7 @@ def home():
         ('Meme Form', '/meme'),
         ('Meme API', '/api/meme/1/getlist'),
         ('Download Williamhill', '/williamhill'),
+        ('Download Totolotek', '/totolotek'),
+        ('Download Mashape Odds', '/mashapeodds'),
     ]
     return render_template('home.html', parts=handlers)
