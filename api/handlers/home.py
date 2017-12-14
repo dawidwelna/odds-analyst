@@ -10,6 +10,7 @@ def home():
     # List of handlers
     handlers = [
         ('Meme Form', '/meme'),
-        ('Meme API', '/api/meme/1/getlist')
+        ('Meme API', '/api/meme/1/getlist'),
+        ('Download Williamhill', '/williamhill'),
     ]
     return render_template('home.html', parts=handlers)
