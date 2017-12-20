@@ -12,47 +12,53 @@ import requests
 
 @app.route('/williamhill', methods=['GET'])
 def download_williamhill():
-    url = 'http://sports.williamhill.it/bet_ita/it/betting/y/5/tm/0/Calcio.html'
-    logging.info('page: {}'.format(url))
-
-    #http = urllib3.PoolManager()
-    response = requests.get(url)
-    soup = BeautifulSoup(response.content, 'html.parser')
-
-    events = soup.select(('div[id^="ip_type_"]'))
-
     ret = ""
 
-    league = "NO LEAGUE"
-    for e in events:
-        try:
-            league = e.find_all('h3')[0].text
-        except:
-            continue
+    for x in range(0,2):
+        url = 'http://sports.williamhill.it/bet_ita/it/betting/y/5/tm/{}/Calcio.html'.format(x)
+        logging.info('page: {}'.format(url))
 
-        rows = e.find_all('tr', attrs={'class': 'rowOdd'} )
+        #http = urllib3.PoolManager()
+        response = requests.get(url)
+        soup = BeautifulSoup(response.content, 'html.parser')
 
-        for row in rows:
-            cols = row.find_all('td', attrs={'scope': 'col'})
+        events = soup.select(('div[id^="ip_type_"]'))
 
-            #ret += ( "{0}<br>".format(datetime.date.today()) )
-            ret += (league + '<br>' + " " + cols[2].text + '<br>')
-            ret += ( cols[4].text + ' ' + cols[5].text + ' ' + cols[6].text + '<br><br>' )
+        league = "NO LEAGUE"
+        for e in events:
+            try:
+                league = e.find_all('h3')[0].text
+            except:
+                continue
 
-            teams = cols[2].text.split(" - ")
+            rows = e.find_all('tr', attrs={'class': 'rowOdd'} )
 
-            # Save the parameters in the datastore
-            m = Match(
+            for row in rows:
+                cols = row.find_all('td', attrs={'scope': 'col'})
 
-                league=league,
-                team_home=teams[0],
-                team_away=teams[1],
-                odd_home=float(cols[4].text),
-                odd_draw=float(cols[5].text),
-                odd_away=float(cols[6].text),
-                bookmaker='williamhill',
-                bookmaker_country="ITALY")
-            m.put()
+                #ret += ( "{0}<br>".format(datetime.date.today()) )
+                ret += "{}  ".format(cols[0].text.encode('utf-8').strip())
+                ret += "{}<br>".format(cols[1].text.encode('utf-8').strip())
+                ret += "{}<br>".format(league)
+                ret += "{}<br>".format(cols[2].text.encode('utf-8').strip())
+                ret += "{}<br>".format(cols[4].text.encode('utf-8').strip())
+                ret += "{}<br>".format(cols[5].text.encode('utf-8').strip())
+                ret += "{}<br>".format(cols[6].text.encode('utf-8').strip())
+                ret += "<br><br>"
+
+                teams = cols[2].text.split(" - ")
+
+                # Save the parameters in the datastore
+                m = Match(
+                    league=league,
+                    team_home=teams[0],
+                    team_away=teams[1],
+                    odd_home=float(cols[4].text),
+                    odd_draw=float(cols[5].text),
+                    odd_away=float(cols[6].text),
+                    bookmaker='williamhill',
+                    bookmaker_country="IT")
+                #m.put()
 
 
     return ret
