@@ -23,6 +23,7 @@ def download_totolotek():
     row_list = table.find_all('tr')
 
     league = "NO LEAGUE"
+    date = "Unknown"
 
     ret = ""
     for row in row_list:
@@ -40,32 +41,38 @@ def download_totolotek():
                         league = league.strip()
                     except IndexError:
                         # IndexError means also that this is data row (we can get data here)
-                        continue
+                        date = cell_list[1].get_text()
+                        date = date.lstrip("Data: ")
+                        date = date.rstrip("(Continued on the next page)")
+                        date = date.rstrip("(0123456789)")
+                        date = date.strip()
+                        #print date
                 elif row['class'][0] == "dxgvDataRow_BlackGlass":
                     # match row now
 
                     cell_list = row.find_all('td')
+                    try:
+                        hour = cell_list[3].get_text()
+                        odd_home = float(cell_list[7].a.get_text().replace(',', '.'))
+                        odd_draw = float(cell_list[8].a.get_text().replace(',', '.'))
+                        odd_away = float(cell_list[9].a.get_text().replace(',', '.'))
+                        team_home = str(cell_list[5].get_text())
+                        team_away = str(cell_list[6].get_text())
+                        ret += ("{} {} {}  {} - {}  {} {} {} <br><br>".format(date, hour, league, team_home,\
+                                                                              team_away, odd_home, odd_draw, odd_away))
+                        '''m = Match(
+                                league = league,
+                                odd_home = odd_home,
+                                odd_draw = odd_draw,
+                                odd_away = odd_away,
+                                team_home = team_home,
+                                team_away = team_away,
+                                bookmaker='totolotek',
+                                bookmaker_country = 'Poland')
+                        m.put()'''
 
-                    hour = cell_list[3].get_text()
-                    odd_home = float(cell_list[7].a.get_text().replace(',', '.'))
-                    odd_draw = float(cell_list[8].a.get_text().replace(',', '.'))
-                    odd_away = float(cell_list[9].a.get_text().replace(',', '.'))
-                    team_home = str(cell_list[5].get_text())
-                    team_away = str(cell_list[6].get_text())
-
-                    ret += ("{} {}  {} - {}  {} {} {} <br><br>".format(hour, league, team_home, team_away,\
-                                                                odd_home, odd_draw, odd_away))
-
-                    m = Match(league = league,
-                            odd_home = odd_home,
-                            odd_draw = odd_draw,
-                            odd_away = odd_away,
-                            team_home = team_home,
-                            team_away = team_away,
-                            bookmaker='totolotek',
-                            bookmaker_country = 'Poland')
-                    m.put()
-
+                    except AttributeError:
+                        continue
 
         except KeyError:
             # if the row doesn't have key called "class"
